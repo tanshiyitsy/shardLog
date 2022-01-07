@@ -23,11 +23,11 @@ def recvData():
         # 创建接收
         # 如果有新的客户端来链接服务器，那么就产生一个新的套接字专门为这个客户端服务
         client_socket, clientAddr = tcp_server.accept()
-        print("accept new connect" + str(clientAddr))
+        # print("accept new connect" + str(clientAddr))
 
         from_client_msg = client_socket.recv(2048)  # 接收1024给字节,这里recv接收的不再是元组，区别UDP
         from_client_msg = from_client_msg.decode("gbk")
-        print("接收的数据：", from_client_msg)
+        # print("接收的数据：", from_client_msg)
 
         # 判断请求
         if from_client_msg == "exit":

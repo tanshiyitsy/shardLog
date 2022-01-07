@@ -2,10 +2,14 @@ from socket import *
 import random
 import json
 import os
+import time
 
 class CommunicationData:
     type = ''   # W,R,A(audit), H(对比hash）
     content = ''
+
+#
+fw = open(os.getcwd()+"\\logGenerationData.txt", "a")
 
 
 if __name__ == '__main__':
@@ -19,8 +23,10 @@ if __name__ == '__main__':
     f = open("D:\Hadoop.log", encoding = "utf-8")
     line = f.readline()
     i = 0
-    while line and i<4:
-        i += 1
+    print("start logSystem...time="+str(time.time()))  # 单位时间是秒
+    while line and i<10001:
+        if i % 100 == 0:
+            fw.write("logSystem,i="+str(i)+", time="+str(time.time())+"\n")
         # print("tantan ", line)                # 后面跟 ',' 将忽略换行符
         # 3. 从nodePool里随机选取一个进行连接
         shard = random.choice(shards)
@@ -28,7 +34,7 @@ if __name__ == '__main__':
 
         # 3.1 创建套接字
         tcp_socket = socket(AF_INET, SOCK_STREAM)
-        print("start to connect:"+ node['ip'] + " "+ node['port'])
+        # print("start to connect:"+ node['ip'] + " "+ node['port'])
         tcp_socket.connect((node['ip'], int(node['port'])))   # 连接服务器，建立连接,参数是元组形式
 
         # 3.2 发送数据
@@ -45,4 +51,6 @@ if __name__ == '__main__':
         # tcp_socket.send("exit".encode("gbk"))
         # 关闭连接
         tcp_socket.close()
-        print("close the connection")
+        # print("close the connection")
+        line = f.readline()
+        i += 1

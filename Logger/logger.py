@@ -4,7 +4,7 @@ import time
 import json
 import utils
 import sendMsg
-
+import os
 
 '''
 ip = "127.0.0.1"
@@ -48,11 +48,8 @@ class Log:
     rawData = ''
 
 
-def handle(recvMsg):
-    cmd = recvMsg.spli("::", 0)[0]
-    if cmd == 'W':
-        print("sfdsf")
 
+fw = open(os.getcwd()+"\\logUpChainRate.txt", "a")
 
 log_queue = []
 
@@ -66,13 +63,15 @@ def handleWrite(logData):
     log.rawData = logData
     log_queue.append(log.__dict__)
 
-    if len(log_queue) >= 2:
+    if len(log_queue) >= 100:
+        fw.write("generated a block,time="+utils.generateStrTime()+"\n")
+        print("generated a block,time="+utils.generateStrTime())
         block = Block()
         block.hashPrevBlock = ''
         block.hashMerkleRoot = calMerkleRoot(log_queue)
-        block.timestamp = time.time()
+        block.timestamp = utils.generateFloatTime()
         block.logs = log_queue
-        print("up chain...+"+json.dumps(block.__dict__))
+        # print("up chain...+"+json.dumps(block.__dict__))
         PBFT(block, 0)
         log_queue.clear()
 
@@ -99,11 +98,11 @@ def PBFT(block, shardId):
 
 
 def writeLocal(communicationMsg):
-    time.sleep(0.1)  # 0.1 ms
+    time.sleep(0.01)  # 1/1000 = 0.01 ms
     path = "D:\BlocksFile" + utils.ip + " " + str(utils.port)
 
-    fw = open(path, "a")
-    fw.write(communicationMsg.content+'\n')
+    blocksFile = open(path, "a")
+    blocksFile.write(communicationMsg.content+'\n')
 
 
 '''

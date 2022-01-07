@@ -1,6 +1,6 @@
 import os
 import json
-
+import time
 
 ip = "127.0.0.1"
 port = 8008
@@ -13,6 +13,11 @@ line = mapFile.readline()
 mapTable = json.loads(line)
 
 
+def generateStrTime():
+    return str(time.time())
+
+def generateFloatTime():
+    return time.time()
 
 
 class MapData:
