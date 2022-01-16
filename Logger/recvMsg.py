@@ -11,13 +11,15 @@ queueLock = threading.Lock()
 rqueueLock = threading.RLock()
 
 
-def recvData():
+def recvData(ip="127.0.0.1",port="8008"):
     tcp_server = socket(AF_INET, SOCK_STREAM)
-    tcp_server.bind(('', utils.port))  # 绑定ip，port, 这里ip默认本机
+    tcp_server.bind((ip, int(port)))  # 绑定ip，port, 这里ip默认本机
     # 启动被动连接,多少个客户端可以连接
     # 使用socket创建的套接字默认的属性是主动的,使用listen将其变为被动的，这样就可以接收别人的链接了
     tcp_server.listen(128)
-    print("logger is ready, port:" + str(utils.port))
+    print("logger is ready, port:" + port)
+    utils.ip = ip
+    utils.port = port
 
     while True:
         # 创建接收

@@ -65,7 +65,7 @@ def handleWrite(logData):
 
     if len(log_queue) >= 100:
         fw.write("generated a block,time="+utils.generateStrTime()+"\n")
-        print("generated a block,time="+utils.generateStrTime())
+        # print("generated a block,time="+utils.generateStrTime())
         block = Block()
         block.hashPrevBlock = ''
         block.hashMerkleRoot = calMerkleRoot(log_queue)
