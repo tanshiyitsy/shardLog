@@ -1,10 +1,11 @@
 from socket import *
 
+
 def sendData(node, send_data):
     tcp_socket = socket(AF_INET, SOCK_STREAM)
-    print("start to connect:"+ node['ip'] + " "+ node['port'])
-    tcp_socket.connect((node['ip'], int(node['port'])))   # 连接服务器，建立连接,参数是元组形式
-    tcp_socket.send(send_data.encode("gbk")) # 加上.decode("gbk")可以解决乱码
-    print("send msg:"+send_data.encode("gbk"))
+    tcp_socket.connect((node['ip'], int(node['port'])))  # 连接服务器，建立连接,参数是元组形式
+    tcp_socket.send(send_data.encode("gbk"))  # 加上.decode("gbk")可以解决乱码
+    # print("send msg:"+send_data)
     tcp_socket.close()
+
 

@@ -3,6 +3,7 @@ import random
 import json
 import os
 import time
+import hashlib
 
 class CommunicationData:
     type = ''   # W,R,A(audit), H(对比hash）
@@ -24,18 +25,25 @@ if __name__ == '__main__':
     line = f.readline()
     i = 0
     print("start logSystem...time="+str(time.time()))  # 单位时间是秒
-    while line and i<10001:
-        if i % 100 == 0:
+    while line and i<1001:
+        if i % 10 == 0:
             fw.write("logSystem,i="+str(i)+", time="+str(time.time())+"\n")
         # print("tantan ", line)                # 后面跟 ',' 将忽略换行符
         # 3. 从nodePool里随机选取一个进行连接
+        # 修改成直接从目标分片里选取一个吧
+        # hashLog = hashlib.sha256(line.encode('utf-8')).hexdigest()
+        # targetShardId = int(hashLog[-2:], 16) % len(shards)  # 用日志hash的最后两位转换为10进制进行求余选择分片
+        # shard = shards[targetShardId]
         shard = random.choice(shards)
         node = random.choice(shard)
+        # print("hashLog is:"+hashLog)
+        # print("this targetId is:"+str(targetShardId))
 
         # 3.1 创建套接字
         tcp_socket = socket(AF_INET, SOCK_STREAM)
-        # print("start to connect:"+ node['ip'] + " "+ node['port'])
+        print("start to connect:"+ node['ip'] + " "+ node['port'])
         tcp_socket.connect((node['ip'], int(node['port'])))   # 连接服务器，建立连接,参数是元组形式
+        # tcp_socket.connect(("", int(node['port'])))
 
         # 3.2 发送数据
         conmmunicationData = CommunicationData()

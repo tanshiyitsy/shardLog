@@ -2,7 +2,7 @@ import threading
 import utils
 import recvMsg
 import time
-import json
+from multiprocessing import Process
 
 
 if __name__ == '__main__':
@@ -11,10 +11,13 @@ if __name__ == '__main__':
     shards = utils.mapTable[-1]['shards']
     for shard in shards:
         for node in shard:
-            recvDataThread = threading.Thread(target=recvMsg.recvData(), args=(node['ip'],node['port'],))
-            recvDataThreads.append(recvDataThread)
-            recvDataThread.start()
+            # print("ip:" + node['ip'] + " port:" + node['port'] + " recvDataThread started,time=" + str(time.time()))
+            process = Process(target=recvMsg.recvData, args=(node['ip'],node['port'],))
+            recvDataThreads.append(process)
+            # recvDataThread = threading.Thread(target=recvMsg.recvData, args=(node['ip'],node['port'],))
+            # recvDataThreads.append(recvDataThread)
 
     for recvDataThread in recvDataThreads:
-        print("ip:" + node['ip'] + " port:" + node['port'] + " recvDataThread started,time=" + str(time.time()))
         recvDataThread.start()
+
+
