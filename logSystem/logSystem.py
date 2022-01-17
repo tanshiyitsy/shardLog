@@ -26,15 +26,15 @@ if __name__ == '__main__':
     i = 0
     print("start logSystem...time="+str(time.time()))  # 单位时间是秒
     while line and i<1001:
-        if i % 10 == 0:
+        if i % 50 == 0:
             fw.write("logSystem,i="+str(i)+", time="+str(time.time())+"\n")
         # print("tantan ", line)                # 后面跟 ',' 将忽略换行符
         # 3. 从nodePool里随机选取一个进行连接
         # 修改成直接从目标分片里选取一个吧
-        # hashLog = hashlib.sha256(line.encode('utf-8')).hexdigest()
-        # targetShardId = int(hashLog[-2:], 16) % len(shards)  # 用日志hash的最后两位转换为10进制进行求余选择分片
-        # shard = shards[targetShardId]
-        shard = random.choice(shards)
+        hashLog = hashlib.sha256(line.encode('utf-8')).hexdigest()
+        targetShardId = int(hashLog[-2:], 16) % len(shards)  # 用日志hash的最后两位转换为10进制进行求余选择分片
+        shard = shards[targetShardId]
+        # shard = random.choice(shards)
         node = random.choice(shard)
         # print("hashLog is:"+hashLog)
         # print("this targetId is:"+str(targetShardId))

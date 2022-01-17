@@ -29,7 +29,7 @@ def recvData(ip="",port="8008"):
         client_socket, clientAddr = tcp_server.accept()
         # print("ip:"+ip+" port:"+port+" accept new connect:" + str(clientAddr))
 
-        from_client_msg = client_socket.recv(1024)  # 接收1024给字节,这里recv接收的不再是元组，区别UDP
+        from_client_msg = client_socket.recv(1024*1024)  # 接收1024给字节,这里recv接收的不再是元组，区别UDP
         from_client_msg = from_client_msg.decode("gbk")
         # print("接收的数据：", from_client_msg)
 
@@ -63,10 +63,12 @@ def recvData(ip="",port="8008"):
                 workQueue.put(commnicationData)
                 utils.queueLock.release()
                 pass
+            else:
+                pass
         except Exception as e:
             # 这里有可能是接收空间不够，被自动截断
             print("ERROR:   ip:"+ip+" port:"+port+" content:"+from_client_msg)
-            traceback.print_exc()
+            # traceback.print_exc()
         from_client_msg = ""
         client_socket.close()
 

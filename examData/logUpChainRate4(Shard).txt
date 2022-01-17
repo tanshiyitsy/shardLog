@@ -1,0 +1,3 @@
+shardId:3 ip:127.0.0.1 port:4017 generated a block,time=1642417072.7688081
+shardId:3 ip:127.0.0.1 port:4016 generated a block,time=1642417072.7698076
+shardId:3 ip:127.0.0.1 port:4015 generated a block,time=1642417072.8316398

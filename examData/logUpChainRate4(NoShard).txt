@@ -1,0 +1,12 @@
+shardId:0 ip:127.0.0.1 port:4020 generated a block,time=1642416597.7605112
+shardId:0 ip:127.0.0.1 port:4017 generated a block,time=1642416597.7635026
+shardId:0 ip:127.0.0.1 port:4013 generated a block,time=1642416597.9494846
+shardId:0 ip:127.0.0.1 port:4016 generated a block,time=1642416597.950487
+shardId:0 ip:127.0.0.1 port:4011 generated a block,time=1642416597.950487
+shardId:0 ip:127.0.0.1 port:4008 generated a block,time=1642416597.950487
+shardId:0 ip:127.0.0.1 port:4010 generated a block,time=1642416597.9514828
+shardId:0 ip:127.0.0.1 port:4012 generated a block,time=1642416597.9514828
+shardId:0 ip:127.0.0.1 port:4019 generated a block,time=1642416597.9514828
+shardId:0 ip:127.0.0.1 port:4014 generated a block,time=1642416597.952481
+shardId:0 ip:127.0.0.1 port:4009 generated a block,time=1642416597.952481
+shardId:0 ip:127.0.0.1 port:4015 generated a block,time=1642416597.9674406

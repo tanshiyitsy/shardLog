@@ -32,22 +32,31 @@ def handleWrite(conmmunicationData):
     targetShardId = int(hashLog[-2:],16) % utils.shardNum  # 用日志hash的最后两位转换为10进制进行求余选择分片
     # print("hashLog is:"+hashLog)
 
+
     if targetShardId == utils.shardId:
-        conmmunicationData.type = 'M'  # 将其从W修改为M
-        send_data = json.dumps(conmmunicationData.__dict__)
         # 分片内广播这条日志
         # 按理这里需要把所有的日志内容广播给分片里的所有节点，但是实际运行中大量连接把目标端口占满挂掉，显示“目标主机积极拒绝”
         # 所以这一步暂时不完成，可用sleep代替；或者建立一个套接字池
-        for node in utils.mapTable[-1]['shards'][utils.shardId]:
+        # conmmunicationData.type = 'Z'  # 将其从W修改为Z，这里广播是为了结果数据的可信性，其它节点收到这种类型的数据时并不处理
+        # send_data = json.dumps(conmmunicationData.__dict__)
+
+        # print("shardId:" + str(utils.shardId) + " port:" + utils.port + "started time:"+ utils.generateStrTime())
+        shard = utils.mapTable[-1]['shards'][utils.shardId]
+        for node in shard:
             if node['ip'] == utils.ip and node['port'] == str(utils.port):  # 不用给自己发送
                 continue
-            sendMsg.sendData(node, send_data)
+            # print("shardId:"+str(utils.shardId)+ " port:"+utils.port +" desPort:"+ node['port']+" send msg:"+send_data)
+            # sendMsg.sendData(node, send_data)
+            time.sleep(0.00070525)
+        # print("shardId:" + str(utils.shardId) + " port:" + utils.port + "ended time:" + utils.generateStrTime() + " shardLen:"+str(len(shard)))
         writeLocal(logData)
 
     else:
+        conmmunicationData.type = 'M'  # 将其从W修改为M
         send_data = json.dumps(conmmunicationData.__dict__)
+
         # 转发到对应分片
-        # print("this shardId is:"+str(utils.shardId)+" targetShardId is :"+str(targetShardId)+" ip:"+utils.ip + " port:"+utils.port)
+        print("this shardId is:"+str(utils.shardId)+" targetShardId is :"+str(targetShardId)+" ip:"+utils.ip + " port:"+utils.port)
         node = random.choice(utils.mapTable[-1]['shards'][targetShardId])
         sendMsg.sendData(node, send_data)
 
@@ -62,16 +71,17 @@ def writeLocal(logData): # 确定属于该server, 不用再次广播
     log_queue.append(log.__dict__)
     # print("ip:"+utils.ip+" port:"+utils.port+" logQueue.len+"+str(len(log_queue)))
 
-    if len(log_queue) >= 10:  # 可以形成一个块了, 然后把块内容序列化到本地
+    if len(log_queue) >= 50:  # 可以形成一个块了, 然后把块内容序列化到本地
+        # print("ip:" + utils.ip + " port:" + utils.port + " logQueue.len+" + str(len(log_queue)))
         utils.queueLock.acquire()
         fw = open(os.getcwd() + "\\logUpChainRate.txt", "a")
+        # fw = open(os.getcwd() + "\\" +str(utils.shardId) + "\\logUpChainRate" + utils.port + ".txt", "a")
         fw.write("shardId:" + str(
             utils.shardId) + " ip:" + utils.ip + " port:" + utils.port + " generated a block,time=" + utils.generateStrTime() + "\n")
-        print("shardId:" + str(
-            utils.shardId) + " ip:" + utils.ip + " port:" + utils.port + " generated a block,time=" + utils.generateStrTime())
+        # print("shardId:" + str(
+        #     utils.shardId) + " ip:" + utils.ip + " port:" + utils.port + " generated a block,time=" + utils.generateStrTime())
         fw.close()
         utils.queueLock.release()
-        # print("generated a block,time="+utils.generateStrTime())
 
 
         block = Block()
@@ -97,7 +107,7 @@ def PBFT(block):
     communicationMsg.type = 'B'
     communicationMsg.content = json.dumps(block.__dict__)
 
-    time.sleep(0.01)  # 1/1000 = 0.01 ms
+    time.sleep(0.001)  # 1/1000 = 0.001 s
     path = "D:\BlocksFile" + utils.ip + " " + str(utils.port)
 
     blocksFile = open(path, "a")
