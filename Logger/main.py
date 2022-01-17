@@ -1,13 +1,18 @@
-import threading
 import utils
 import recvMsg
-import time
+import os
 from multiprocessing import Process
 
 
 if __name__ == '__main__':
+    # 初始化文件
+    fw = open(os.getcwd() + "\\logUpChainRate.txt", "w")
+    fw.write("start..." + "\n")
+    fw.close()
+
     recvDataThreads = []
     # 1. 启动当前shard中的所有node
+    # 只模拟分片0的
     shards = utils.mapTable[-1]['shards']
     for shard in shards:
         for node in shard:
@@ -16,6 +21,7 @@ if __name__ == '__main__':
             recvDataThreads.append(process)
             # recvDataThread = threading.Thread(target=recvMsg.recvData, args=(node['ip'],node['port'],))
             # recvDataThreads.append(recvDataThread)
+        break
 
     for recvDataThread in recvDataThreads:
         recvDataThread.start()

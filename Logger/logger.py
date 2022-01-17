@@ -107,7 +107,7 @@ def PBFT(block):
     communicationMsg.type = 'B'
     communicationMsg.content = json.dumps(block.__dict__)
 
-    time.sleep(0.001)  # 1/1000 = 0.001 s
+    time.sleep(0.0002)  # 1/1000 = 0.001 s
     path = "D:\BlocksFile" + utils.ip + " " + str(utils.port)
 
     blocksFile = open(path, "a")

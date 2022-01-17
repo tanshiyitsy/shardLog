@@ -26,39 +26,44 @@ if __name__ == '__main__':
     i = 0
     print("start logSystem...time="+str(time.time()))  # 单位时间是秒
     while line and i<1001:
+        # 这一行用于统计日志产生速率
         if i % 50 == 0:
             fw.write("logSystem,i="+str(i)+", time="+str(time.time())+"\n")
-        # print("tantan ", line)                # 后面跟 ',' 将忽略换行符
         # 3. 从nodePool里随机选取一个进行连接
         # 修改成直接从目标分片里选取一个吧
         hashLog = hashlib.sha256(line.encode('utf-8')).hexdigest()
         targetShardId = int(hashLog[-2:], 16) % len(shards)  # 用日志hash的最后两位转换为10进制进行求余选择分片
+        if targetShardId != 0:
+            # 只发送分片0 的数据
+            line = f.readline()
+            i += 1
+            continue
+
         shard = shards[targetShardId]
         # shard = random.choice(shards)
         node = random.choice(shard)
-        # print("hashLog is:"+hashLog)
-        # print("this targetId is:"+str(targetShardId))
 
-        # 3.1 创建套接字
-        tcp_socket = socket(AF_INET, SOCK_STREAM)
-        print("start to connect:"+ node['ip'] + " "+ node['port'])
-        tcp_socket.connect((node['ip'], int(node['port'])))   # 连接服务器，建立连接,参数是元组形式
-        # tcp_socket.connect(("", int(node['port'])))
+        try:
+            # 3.1 创建套接字
+            tcp_socket = socket(AF_INET, SOCK_STREAM)
+            print("start to connect:"+ node['ip'] + " "+ node['port'])
+            tcp_socket.connect((node['ip'], int(node['port'])))   # 连接服务器，建立连接,参数是元组形式
 
-        # 3.2 发送数据
-        conmmunicationData = CommunicationData()
-        conmmunicationData.type = 'W'
-        conmmunicationData.content = line
-        send_data = json.dumps(conmmunicationData.__dict__)
-        tcp_socket.send(send_data.encode("gbk")) # 加上.decode("gbk")可以解决乱码
+            # 3.2 发送数据
+            conmmunicationData = CommunicationData()
+            conmmunicationData.type = 'W'
+            conmmunicationData.content = line
+            send_data = json.dumps(conmmunicationData.__dict__)
+            tcp_socket.send(send_data.encode("gbk")) # 加上.decode("gbk")可以解决乱码
 
-        # 注意这个1024byte，大小根据需求自己设置
-        # from_server_msg = tcp_socket.recv(1024) # 从服务器接收数据
-        # print(from_server_msg.decode("gbk"))
-
-        # tcp_socket.send("exit".encode("gbk"))
-        # 关闭连接
-        tcp_socket.close()
-        # print("close the connection")
-        line = f.readline()
-        i += 1
+            # 注意这个1024byte，大小根据需求自己设置
+            # from_server_msg = tcp_socket.recv(1024) # 从服务器接收数据
+            # print(from_server_msg.decode("gbk"))
+        except Exception as e:
+            pass
+        finally:
+            # tcp_socket.send("exit".encode("gbk"))
+            # 关闭连接
+            tcp_socket.close()
+            line = f.readline()
+            i += 1
