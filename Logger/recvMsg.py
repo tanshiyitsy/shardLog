@@ -1,7 +1,7 @@
 from socket import *
 import json
 import queue
-import threading
+import os
 import logger
 import  utils
 import traceback
@@ -22,6 +22,15 @@ def recvData(ip="",port="8008"):
     utils.port = port
     utils.shardId = getShard(ip,port)
     print("logger is ready, ip:" + ip + " port:" + port + " shardId:"+str(utils.shardId))
+
+    if utils.shardNum == 1:
+        utils.path = os.getcwd() + "\..\examData\logUpChainRate4(NoShard).txt"
+    else:
+        utils.path = os.getcwd() + "\..\examData\logUpChainRate4(Shard).txt"
+    # 初始化文件
+    fw = open(utils.path,"w")
+    fw.write("start..." + "\n")
+    fw.close()
 
     while True:
         # 创建接收
@@ -68,7 +77,8 @@ def recvData(ip="",port="8008"):
         except Exception as e:
             # 这里有可能是接收空间不够，被自动截断
             print("ERROR:   ip:"+ip+" port:"+port+" content:"+from_client_msg)
-            # traceback.print_exc()
+            print(e)
+            traceback.print_exc()
         from_client_msg = ""
         client_socket.close()
 

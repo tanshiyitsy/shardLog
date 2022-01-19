@@ -45,9 +45,11 @@ def handleWrite(conmmunicationData):
         for node in shard:
             if node['ip'] == utils.ip and node['port'] == str(utils.port):  # 不用给自己发送
                 continue
+            temp = 1
+            temp += 1
             # print("shardId:"+str(utils.shardId)+ " port:"+utils.port +" desPort:"+ node['port']+" send msg:"+send_data)
             # sendMsg.sendData(node, send_data)
-            time.sleep(0.00070525)
+        # time.sleep(0.00070525)
         # print("shardId:" + str(utils.shardId) + " port:" + utils.port + "ended time:" + utils.generateStrTime() + " shardLen:"+str(len(shard)))
         writeLocal(logData)
 
@@ -74,12 +76,12 @@ def writeLocal(logData): # 确定属于该server, 不用再次广播
     if len(log_queue) >= 50:  # 可以形成一个块了, 然后把块内容序列化到本地
         # print("ip:" + utils.ip + " port:" + utils.port + " logQueue.len+" + str(len(log_queue)))
         utils.queueLock.acquire()
-        fw = open(os.getcwd() + "\\logUpChainRate.txt", "a")
-        # fw = open(os.getcwd() + "\\" +str(utils.shardId) + "\\logUpChainRate" + utils.port + ".txt", "a")
+        # fw = open(os.getcwd() + "\\logUpChainRate.txt", "a")
+        fw = open(utils.path,"a")
         fw.write("shardId:" + str(
             utils.shardId) + " ip:" + utils.ip + " port:" + utils.port + " generated a block,time=" + utils.generateStrTime() + "\n")
-        # print("shardId:" + str(
-        #     utils.shardId) + " ip:" + utils.ip + " port:" + utils.port + " generated a block,time=" + utils.generateStrTime())
+        print("shardId:" + str(
+            utils.shardId) + " ip:" + utils.ip + " port:" + utils.port + " generated a block,time=" + utils.generateStrTime())
         fw.close()
         utils.queueLock.release()
 

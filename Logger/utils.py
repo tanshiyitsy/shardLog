@@ -12,12 +12,15 @@ line = mapFile.readline()
 mapTable = json.loads(line)
 
 shardNum = len(mapTable[-1]['shards'])
+path = ""
+
 
 #本node的ip和port
 ip = local()
 port = local()
 shardId = local()
 servers_socket = local()
+path = local()
 
 queueLock = threading.Lock()
 rqueueLock = threading.RLock()
