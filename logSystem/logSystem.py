@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from socket import *
 import random
 import json
@@ -11,19 +12,19 @@ class CommunicationData:
     content = ''
 
 
-fw = open(os.getcwd()+"\\logGenerationData.txt", "a")
+fw = open(os.getcwd()+"/logGenerationData.txt", "a")
 
 
 def check():
     # 未分片的
-    f1 = open(os.getcwd() + "\..\examData\logUpChainRate4(NoShard).txt", encoding="utf-8")
+    f1 = open(os.getcwd() + "/../examData\logUpChainRate4(NoShard).txt", encoding="utf-8")
     line1 = f1.readline()  # 跳过第一行的start
     line1 = f1.readline()
     t11 = float(line1.split("=")[-1])
     line1 = f1.readline()
 
     # 分了三个片的
-    f2 = open(os.getcwd() + "\..\examData\logUpChainRate4(Shard).txt", encoding="utf-8")
+    f2 = open(os.getcwd() + "/../examData\logUpChainRate4(Shard).txt", encoding="utf-8")
     line2 = f2.readline()  # 跳过第一行的start
     line2 = f2.readline()
     t21 = float(line2.split("=")[-1])
@@ -43,13 +44,13 @@ def check():
 
 if __name__ == '__main__':
     # 1. 读取IP+servers文件, 得到所有shards
-    path = os.getcwd() + "\\..\\mapTable"
+    path = os.getcwd() + "/../mapTable"
     mapFile = open(path, encoding="utf-8")
     mapTable = mapFile.readline()
     shards = json.loads(mapTable)[-1]['shards']
 
     # 2. 读取日志文件，模拟产生日志的过程
-    f = open("D:\Hadoop.log", encoding = "utf-8")
+    f = open("/home/hduser/LogShard/Hadoop.log", encoding = "utf-8")
     line = f.readline()
     i = 0
     print("start logSystem...time="+str(time.time()))  # 单位时间是秒

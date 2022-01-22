@@ -3,12 +3,12 @@ import os
 # 第一列是日志的产生速率，第二列是日志的上链速率
 
 if __name__ == '__main__':
-    f1 = open(os.getcwd()+"\..\logSystem\logGenerationData.txt", encoding="utf-8")
+    f1 = open(os.getcwd()+"/../logSystem\logGenerationData.txt", encoding="utf-8")
     line1 = f1.readline()
     t11 = float(line1.split("=")[-1])
     line1 = f1.readline()
 
-    f2 = open(os.getcwd()+"\..\Logger\logUpChainRate.txt", encoding="utf-8")
+    f2 = open(os.getcwd()+"/../Logger\logUpChainRate.txt", encoding="utf-8")
     line2 = f2.readline()
     t21 = float(line2.split("=")[-1])
     line2 = f2.readline()

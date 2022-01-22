@@ -4,13 +4,13 @@ import os
 
 if __name__ == '__main__':
     # 未分片的
-    f1 = open(os.getcwd()+"\logUpChainRate4(NoShard).txt", encoding="utf-8")
+    f1 = open(os.getcwd()+"/logUpChainRate4(NoShard).txt", encoding="utf-8")
     line1 = f1.readline()
     t11 = float(line1.split("=")[-1])
     line1 = f1.readline()
 
     # 分了三个片的
-    f2 = open(os.getcwd()+"\logUpChainRate4(Shard).txt", encoding="utf-8")
+    f2 = open(os.getcwd()+"/logUpChainRate4(Shard).txt", encoding="utf-8")
     line2 = f2.readline()
     t21 = float(line2.split("=")[-1])
     line2 = f2.readline()

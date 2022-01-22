@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from socket import *
 import json
 import queue

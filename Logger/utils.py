@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import os
 import json
 import time
@@ -6,7 +7,7 @@ import threading
 
 # 映射关系
 # mapTable = [{'version':0,'startTime':0, 'endTime':0, 'shards':[[{'ip': "127.0.0.1", 'port': "8008"}]]}]
-path = os.getcwd() + "\\..\\mapTable"
+path = os.getcwd() + "/../mapTable"
 mapFile = open(path, encoding="utf-8")
 line = mapFile.readline()
 mapTable = json.loads(line)
