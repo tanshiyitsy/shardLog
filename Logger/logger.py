@@ -43,7 +43,8 @@ def handleWrite(conmmunicationData):
 
         # print("shardId:" + str(utils.shardId) + " port:" + utils.port + "started time:"+ utils.generateStrTime())
         shard = utils.mapTable[-1]['shards'][utils.shardId]
-        for node in shard:
+        nodes = shard['servers']
+        for node in nodes:
             if node['ip'] == utils.ip and node['port'] == str(utils.port):  # 不用给自己发送
                 continue
             temp = 1

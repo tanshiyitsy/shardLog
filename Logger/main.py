@@ -17,7 +17,8 @@ if __name__ == '__main__':
     shards = utils.mapTable[-1]['shards']
 
     for shard in shards:
-        for node in shard:
+        nodes = shard['servers']
+        for node in nodes:
             # print("ip:" + node['ip'] + " port:" + node['port'] + " recvDataThread started,time=" + str(time.time()))
             process = Process(target=recvMsg.recvData, args=(node['ip'],node['port'],))
             recvDataThreads.append(process)

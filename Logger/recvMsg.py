@@ -25,9 +25,9 @@ def recvData(ip="",port="8008"):
     print("logger is ready, ip:" + ip + " port:" + port + " shardId:"+str(utils.shardId))
 
     if utils.shardNum == 1:
-        utils.path = os.getcwd() + "\..\examData\logUpChainRate4(NoShard).txt"
+        utils.path = os.getcwd() + "/../examData/logUpChainRate4(NoShard).txt"
     else:
-        utils.path = os.getcwd() + "\..\examData\logUpChainRate4(Shard).txt"
+        utils.path = os.getcwd() + "/../examData/logUpChainRate4(Shard).txt"
     # 初始化文件
     fw = open(utils.path,"w")
     fw.write("start..." + "\n")
@@ -87,7 +87,8 @@ def getShard(ip,port):
     shardId = 0
     shards = utils.mapTable[-1]['shards']
     for shard in shards:
-        for node in shard:
+        nodes = shard['servers']
+        for node in nodes:
             if node['ip'] == ip and node['port'] == port:
                 return shardId
         shardId += 1
