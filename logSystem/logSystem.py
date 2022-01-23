@@ -70,6 +70,15 @@ def check5Core(path):
     time1 = t12 - t11
     return time1
 
+def tail():
+    # 收尾工作
+    nodes = shards[0]['servers']
+    for node in nodes:
+        path = os.getcwd() + "/../examData/blockFile" + node['port'] + ".txt"
+        if os.path.exists(path):
+            os.remove(path)
+
+
 if __name__ == '__main__':
     init()
 
@@ -127,4 +136,5 @@ if __name__ == '__main__':
             i += 1
     print("allNum is:"+str(i)+ "  shard0num is:"+str(shard0Num))
     check5()
+    tail()
 

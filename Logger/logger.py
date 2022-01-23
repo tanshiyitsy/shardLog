@@ -112,7 +112,7 @@ def PBFT(block):
     communicationMsg.content = json.dumps(block.__dict__)
 
     time.sleep(0.0002)  # 1/1000 = 0.001 s
-    path = "D:\BlocksFile" + utils.ip + " " + str(utils.port)
+    path = os.getcwd()+"/../examData/blockFile" + str(utils.port) + ".txt"
 
     blocksFile = open(path, "a")
     blocksFile.write(communicationMsg.content + '\n')
