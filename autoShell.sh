@@ -1,6 +1,7 @@
 python3 genMapTable.py
 cd ./Logger
 python3 main.py &
+sleep 10
 echo "run logSyatem"
 cd ../logSystem
 python3 logSystem.py
