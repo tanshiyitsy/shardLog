@@ -82,6 +82,7 @@ def tail():
 if __name__ == '__main__':
     init()
 
+    logNums = int(input("input the num which is needed to processed:"))
     # 读取日志文件，模拟产生日志的过程
     f = open("/home/hduser/LogShard/allLog.txt", encoding = "utf-8")
     line = f.readline()
@@ -89,7 +90,7 @@ if __name__ == '__main__':
     print("start logSystem...time="+str(time.time()))  # 单位时间是秒
     shard0Num=0
     fw = open(os.getcwd() + "/logGenerationData.txt", "a")
-    while line and i<300000:
+    while line and i<logNums:
         # 这一行用于统计日志产生速率
         if i % 50 == 0:
             fw.write("logSystem,i="+str(i)+", time="+str(time.time())+"\n")
