@@ -19,8 +19,8 @@ class Server:
     port = ''
 
 if __name__ == '__main__':
-    shardNums = 10
-    nodeNums = 6
+    shardNums = int(input("input the shard nums please"))
+    nodeNums = int(input("input the node nums please"))
     ip = '127.0.0.1'
     startPort = 5000
     fw = open(os.getcwd() + "/mapTable", "w")

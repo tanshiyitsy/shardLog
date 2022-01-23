@@ -36,16 +36,11 @@ def recvData(ip="",port="8008"):
         # print("ip:"+ip+" port:"+port+" accept new connect:" + str(clientAddr))
 
         from_client_msg = client_socket.recv(1024*1024)  # 接收1024给字节,这里recv接收的不再是元组，区别UDP
-        from_client_msg = from_client_msg.decode("gbk")
-        # print("接收的数据：", from_client_msg)
-
-        # 判断请求
-        # if from_client_msg == "exit":
-        #     print("client_socket closed")
-        #     client_socket.close()
-        #     break
-        commnicationData = utils.CommunicationData()
         try:
+            from_client_msg = from_client_msg.decode("gbk")
+            # print("接收的数据：", from_client_msg)
+
+            commnicationData = utils.CommunicationData()
             tempData = json.loads(from_client_msg)
             commnicationData.__dict__.update(tempData)
             if commnicationData.type == 'M':

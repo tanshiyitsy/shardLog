@@ -11,7 +11,12 @@ class CommunicationData:
     type = ''   # W,R,A(audit), H(对比hash）
     content = ''
 
-shards = []
+# 读取IP + servers文件, 得到所有shards
+mapPath = os.getcwd() + "/../mapTable"
+mapFile = open(mapPath, encoding="utf-8")
+mapTable = mapFile.readline()
+shards = json.loads(mapTable)[-1]['shards']
+
 
 def init():
     # 初始化日志生成文件
@@ -20,12 +25,6 @@ def init():
     fw.close()
 
     # 初始化日志上链文件
-    # 读取IP + servers文件, 得到所有shards
-    path = os.getcwd() + "/../mapTable"
-    mapFile = open(path, encoding="utf-8")
-    mapTable = mapFile.readline()
-    shards = json.loads(mapTable)[-1]['shards']
-
     if len(shards) == 1 :
         desPath = os.getcwd() + "/../Logger/logUpChainRateNoShard.txt"
     else:
@@ -73,10 +72,9 @@ def check5Core(path):
 
 if __name__ == '__main__':
     init()
-    print("shards: "+str(shards))
 
     # 读取日志文件，模拟产生日志的过程
-    f = open("/home/hduser/LogShard/Hadoop.log", encoding = "utf-8")
+    f = open("/home/hduser/LogShard/allLog.txt", encoding = "utf-8")
     line = f.readline()
     i = 0
     print("start logSystem...time="+str(time.time()))  # 单位时间是秒
@@ -127,6 +125,6 @@ if __name__ == '__main__':
             tcp_socket.close()
             line = f.readline()
             i += 1
-    print("allNum is"+str(i)+ "  shard0num is:"+str(shard0Num))
+    print("allNum is:"+str(i)+ "  shard0num is:"+str(shard0Num))
     check5()
 
