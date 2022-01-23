@@ -25,13 +25,9 @@ def recvData(ip="",port="8008"):
     print("logger is ready, ip:" + ip + " port:" + port + " shardId:"+str(utils.shardId))
 
     if utils.shardNum == 1:
-        utils.path = os.getcwd() + "/../examData/logUpChainRate4(NoShard).txt"
+        utils.path = os.getcwd() + "/logUpChainRateNoShard.txt"
     else:
-        utils.path = os.getcwd() + "/../examData/logUpChainRate4(Shard).txt"
-    # 初始化文件
-    fw = open(utils.path,"w")
-    fw.write("start..." + "\n")
-    fw.close()
+        utils.path = os.getcwd() + "/logUpChainRateShard.txt"
 
     while True:
         # 创建接收

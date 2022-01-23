@@ -11,54 +11,81 @@ class CommunicationData:
     type = ''   # W,R,A(audit), H(对比hash）
     content = ''
 
+shards = []
 
-fw = open(os.getcwd()+"/logGenerationData.txt", "a")
+def init():
+    # 初始化日志生成文件
+    fw = open(os.getcwd() + "/logGenerationData.txt", "w")
+    fw.write("start...")
+    fw.close()
 
-
-def check5():
-    # 未分片的
-    f1 = open(os.getcwd() + "/../examData/logUpChainRate4(NoShard).txt", encoding="utf-8")
-    line1 = f1.readline()  # 跳过第一行的start
-    line1 = f1.readline()
-    t11 = float(line1.split("=")[-1])
-    line1 = f1.readline()
-
-    # 分了三个片的
-    f2 = open(os.getcwd() + "/../examData/logUpChainRate4(Shard).txt", encoding="utf-8")
-    line2 = f2.readline()  # 跳过第一行的start
-    line2 = f2.readline()
-    t21 = float(line2.split("=")[-1])
-    line2 = f2.readline()
-
-    while line1:
-        t12 = float(line1.split("=")[-1])
-        line1 = f1.readline()
-
-    while line2:
-        t22 = float(line2.split("=")[-1])
-        line2 = f2.readline()
-
-    time1 = t12 - t11
-    time2 = t22 - t21
-    print("time1=" + str(time1) + " time2:" + str(time2))
-
-if __name__ == '__main__':
-    # 1. 读取IP+servers文件, 得到所有shards
+    # 初始化日志上链文件
+    # 读取IP + servers文件, 得到所有shards
     path = os.getcwd() + "/../mapTable"
     mapFile = open(path, encoding="utf-8")
     mapTable = mapFile.readline()
     shards = json.loads(mapTable)[-1]['shards']
 
-    # 2. 读取日志文件，模拟产生日志的过程
+    if len(shards) == 1 :
+        desPath = os.getcwd() + "/../Logger/logUpChainRateNoShard.txt"
+    else:
+        desPath = os.getcwd() + "/../Logger/logUpChainRateShard.txt"
+    fw = open(desPath, "w")
+    fw.write("start..." + "\n")
+    fw.close()
+
+def ts2Date(timestamp):
+    strTime1 = time.localtime(timestamp) # 通过time.localtime将时间戳转换成时间组
+    c = time.strftime("%Y-%m-%d %H:%M:%S", strTime1)  # 再将时间组转换成指定格式
+    return c
+
+def check5():
+    # 检查分片和未分片的延时
+    print("start check5.....")
+    # 未分片的
+    print("no shard")
+    path1 = os.getcwd() + "/../Logger/logUpChainRateNoShard.txt"
+    time1 = check5Core(path1)
+    # 分片的
+    print("sharded")
+    path2 = os.getcwd() + "/../Logger/logUpChainRateShard.txt"
+    time2 = check5Core(path2)
+
+    print("time1=" + str(time1) + " time2:" + str(time2))
+
+def check5Core(path):
+    t11,t12 = 0,0
+    f1 = open(path, encoding="utf-8")
+    line1 = f1.readline()  # 跳过第一行的start
+    line1 = f1.readline()
+    if line1:
+        t11 = float(line1.split("=")[-1])
+        print("start time :"+ts2Date(t11))
+        line1 = f1.readline()
+
+    while line1:
+        t12 = float(line1.split("=")[-1])
+        line1 = f1.readline()
+
+    print("end time :" + ts2Date(t12))
+    time1 = t12 - t11
+    return time1
+
+if __name__ == '__main__':
+    init()
+    print("shards: "+str(shards))
+
+    # 读取日志文件，模拟产生日志的过程
     f = open("/home/hduser/LogShard/Hadoop.log", encoding = "utf-8")
     line = f.readline()
     i = 0
     print("start logSystem...time="+str(time.time()))  # 单位时间是秒
     shard0Num=0
-    while line and i<1000:
+    fw = open(os.getcwd() + "/logGenerationData.txt", "a")
+    while line and i<300000:
         # 这一行用于统计日志产生速率
-        # if i % 50 == 0:
-        #     fw.write("logSystem,i="+str(i)+", time="+str(time.time())+"\n")
+        if i % 50 == 0:
+            fw.write("logSystem,i="+str(i)+", time="+str(time.time())+"\n")
         # 3. 从nodePool里随机选取一个进行连接
         # 修改成直接从目标分片里选取一个吧
         hashLog = hashlib.sha256(line.encode('utf-8')).hexdigest()
@@ -77,7 +104,7 @@ if __name__ == '__main__':
         try:
             # 3.1 创建套接字
             tcp_socket = socket(AF_INET, SOCK_STREAM)
-            print("start to connect:"+ node['ip'] + " "+ node['port'])
+            # print("start to connect:"+ node['ip'] + " "+ node['port'])
             tcp_socket.connect((node['ip'], int(node['port'])))   # 连接服务器，建立连接,参数是元组形式
             # tcp_socket.connect(("192.168.8.5", int(node['port'])))  # 连接服务器，建立连接,参数是元组形式
 
@@ -100,6 +127,6 @@ if __name__ == '__main__':
             tcp_socket.close()
             line = f.readline()
             i += 1
-    print("shard0num is:"+str(shard0Num))
+    print("allNum is"+str(i)+ "  shard0num is:"+str(shard0Num))
     check5()
 

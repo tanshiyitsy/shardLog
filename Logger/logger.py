@@ -82,8 +82,8 @@ def writeLocal(logData): # 确定属于该server, 不用再次广播
         fw = open(utils.path,"a")
         fw.write("shardId:" + str(
             utils.shardId) + " ip:" + utils.ip + " port:" + utils.port + " generated a block,time=" + utils.generateStrTime() + "\n")
-        print("shardId:" + str(
-            utils.shardId) + " ip:" + utils.ip + " port:" + utils.port + " generated a block,time=" + utils.generateStrTime())
+        # print("shardId:" + str(
+        #     utils.shardId) + " ip:" + utils.ip + " port:" + utils.port + " generated a block,time=" + utils.generateStrTime())
         fw.close()
         utils.queueLock.release()
 
