@@ -78,6 +78,17 @@ def tail():
         if os.path.exists(path):
             os.remove(path)
 
+    logGenerationPath = os.getcwd() + "/logGenerationData.txt"
+    if os.path.exists(logGenerationPath):
+        os.remove(logGenerationPath)
+
+    path1 = os.getcwd() + "/../Logger/logUpChainRateNoShard.txt"
+    if os.path.exists(path1):
+        os.remove(path1)
+
+    path2 = os.getcwd() + "/../Logger/logUpChainRateShard.txt"
+    if os.path.exists(path2):
+        os.remove(path2)
 
 if __name__ == '__main__':
     init()
