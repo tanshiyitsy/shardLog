@@ -72,10 +72,8 @@ def check5Core(path):
 
 def tail():
     # 收尾工作
-    nodes = shards[0]['servers']
-    for node in nodes:
-        path = os.getcwd() + "/../examData/blockFile" + node['port'] + ".txt"
-        print("path:"+path)
+    for port in range(5000,5400):
+        path = os.getcwd() + "/../examData/blockFile" + str(port) + ".txt"
         if os.path.exists(path):
             os.remove(path)
 
